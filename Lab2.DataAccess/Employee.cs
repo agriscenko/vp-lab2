@@ -29,4 +29,6 @@ public class Employee
     public bool IsActive { get; set; } = true;
 
     public required Department Department { get; set; }
+
+    public List<LeaveRequest> LeaveRequests { get; set; } = new();
 }

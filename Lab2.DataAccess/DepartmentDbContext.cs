@@ -10,6 +10,8 @@ public class DepartmentDbContext : DbContext
 
     public DbSet<Employee> Employees { get; set; }
 
+    public DbSet<LeaveRequest> LeaveRequests { get; set; }
+
     public DepartmentDbContext()
     {
     }

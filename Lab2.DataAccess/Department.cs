@@ -13,7 +13,7 @@ public class Department
 
     [Required]
     [Range(1, 5)]
-    public int FloorNumber { get; set; }
+    public required int FloorNumber { get; set; }
 
     [Required]
     [Phone]
@@ -23,10 +23,11 @@ public class Department
     [EmailAddress]
     public required string Email { get; set; }
 
-    public bool IsActive { get; set; } = true;
-
+    [Required]
     [Range(0.00, 5.00)]
-    public decimal Rating { get; set; }
+    public required decimal Rating { get; set; }
+
+    public bool IsActive { get; set; } = true;
 
     [DataType(DataType.Date)]
     public DateTime? LastAuditDate { get; set; }

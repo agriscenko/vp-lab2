@@ -20,11 +20,11 @@ public class Employee
     public required string Position { get; set; }
 
     [Required]
-    public decimal Salary { get; set; }
+    public required decimal Salary { get; set; }
 
     [Required]
     [DataType(DataType.Date)]
-    public DateTime HireDate { get; set; }
+    public required DateTime HireDate { get; set; }
 
     public bool IsActive { get; set; } = true;
 

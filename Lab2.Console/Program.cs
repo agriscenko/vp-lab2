@@ -1,9 +1,6 @@
 ﻿using Lab2.DataAccess;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Lab2.Console;
 
@@ -32,7 +29,7 @@ internal class Program
     {
         var results = db.Departments.Where(d => d.FloorNumber == 1);
 
-        System.Console.WriteLine($"Nodaļu skaits pirmajā stāvā: {results.Count()}.");
+        System.Console.WriteLine($"Nodaļu skaits pirmajā stāvā: {results.Count()}.\n");
     }
 
     [Description("Izvadīt nodaļas nosaukumu ar ID=100, izmantojot FirstOrDefault().")]
@@ -42,11 +39,11 @@ internal class Program
 
         if (department != null)
         {
-            System.Console.WriteLine($"Atrasta nodaļa: {department.Name}");
+            System.Console.WriteLine($"Atrasta nodaļa: {department.Name}.\n");
         }
         else
         {
-            System.Console.WriteLine("Neviena nodaļa ar ID=100 netika atrasta!");
+            System.Console.WriteLine("Neviena nodaļa ar ID=100 netika atrasta!\n");
         }
     }
 
@@ -78,7 +75,25 @@ internal class Program
                 FloorNumber = 1,
                 Email = "hr@example.com",
                 PhoneNumber = "+371 67123001",
-                Rating = 4.8m
+                Rating = 4.8m,
+                Employees = [
+                    new Employee {
+                        FirstName = "Anna",
+                        LastName = "Bērziņa",
+                        Position = "Personāla vadītāja",
+                        Salary = 2500,
+                        HireDate = new DateTime(2020, 3, 12),
+                        Department = null
+                    },
+                    new Employee {
+                        FirstName = "Jānis",
+                        LastName = "Ozols",
+                        Position = "Personāla speciālists",
+                        Salary = 1800,
+                        HireDate = new DateTime(2022, 6, 9),
+                        Department = null
+                    }
+                ]
             },
             new Department {
                 Name = "Pārdošanas nodaļa",
@@ -115,9 +130,46 @@ internal class Program
                 Email = "it@example.com",
                 PhoneNumber = "+371 67123006",
                 Rating = 4.8m,
-                Description = "Emails get lost. Tickets get answered. :)"
+                Description = "Emails get lost. Tickets get answered. :)",
+                Employees = [
+                    new Employee {
+                        FirstName = "Edgars",
+                        LastName = "Lapiņš",
+                        Position = "IT nodaļas vādītājs",
+                        Salary = 3500,
+                        HireDate = new DateTime(2020, 4, 2),
+                        Department = null
+                    },
+                    new Employee {
+                        FirstName = "Dace",
+                        LastName = "Rudāne",
+                        Position = "IT speciāliste",
+                        Salary = 2500,
+                        HireDate = new DateTime(2023, 2, 3),
+                        Department = null
+                    },
+                    new Employee {
+                        FirstName = "Rihards",
+                        LastName = "Veinbergs",
+                        Position = "Programmētājs",
+                        Salary = 2800,
+                        HireDate = new DateTime(2024, 12, 18),
+                        Department = null
+                    }
+                ]
             }
         };
+
+        foreach (var department in departments)
+        {
+            if (department.Employees != null)
+            {
+                foreach (var employee in department.Employees)
+                {
+                    employee.Department = department;
+                }
+            }
+        }
 
         db.Departments.AddRange(departments);
 
@@ -149,7 +201,7 @@ internal class Program
 
             db.SaveChanges();
 
-            System.Console.WriteLine($"Nosaukums: {department.Name}, Reitings: {department.Rating}, Audits veikts: {department.LastAuditDate}.");
+            System.Console.WriteLine($"Nosaukums: {department.Name}, Reitings: {department.Rating}, Audits veikts: {department.LastAuditDate}.\n");
         }
     }
 
@@ -159,6 +211,8 @@ internal class Program
         var results = db.Departments
             .Include(d => d.Employees)
             .Where(d => d.FloorNumber == 3);
+
+        System.Console.WriteLine("Dati par 3. stāva nodaļām un to darbiniekiem:");
 
         foreach (var department in results)
         {
